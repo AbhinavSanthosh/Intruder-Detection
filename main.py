@@ -1,19 +1,23 @@
 from flask import Flask, Response, render_template
 import cv2
 from ultralytics import YOLO
-import numpy as np
+import os
+from dotenv import load_dotenv
 import pymongo
 from datetime import datetime
 import pygame
 import threading
+
+load_dotenv()
 
 app = Flask(__name__)
 
 model = YOLO('yolov8s.pt')
 
 target_classes = ['person', 'cat', 'dog', 'sheep', 'cow', 'elephant', 'bear', 'pig']
+mongo_url = os.getenv("MONGO_URL")
 
-client = pymongo.MongoClient("mongodb+srv://utilitico:31hrK1EvQEF23W0c@utilitico.mxknf.mongodb.net/?retryWrites=true&w=majority&appName=utilitico")
+client = pymongo.MongoClient(mongo_url)
 db = client["Intruder_Detection"]
 collection = db["logs"]
 
